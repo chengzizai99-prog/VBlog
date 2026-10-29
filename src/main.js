@@ -1,8 +1,4 @@
 import Vue from 'vue'
-import ElementUI from 'element-ui'
-import Vant from 'vant'
-import 'element-ui/lib/theme-chalk/index.css'
-import 'vant/lib/vant-css/index.css'
 import DOMPurify from 'dompurify'
 import App from './App'
 import util from './utils/util'
@@ -11,9 +7,6 @@ import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import 'mavon-editor/dist/markdown/github-markdown.min.css'
 import store from './store'
-
-Vue.use(ElementUI)
-Vue.use(Vant)
 
 Vue.use(mavonEditor)
 
