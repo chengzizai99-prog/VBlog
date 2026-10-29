@@ -44,13 +44,9 @@ const token = {
                     })
                 }
             }).catch((err) => {
-                // 原来这里是空的 catch：校验 token 一失败（网络错误、接口 500 等）
-                // 界面上什么都不显示，用户以为点绑定没反应。至少留痕，方便排查。
+                // 具体原因（401 Token 无效 / 403 限流 / 网络错误）已由 src/utils/request.js
+                // 的响应拦截器统一弹出，这里不再弹第二条，否则手机会连弹两个对话框。
                 console.error('[token] 绑定校验失败', err)
-                message({
-                    message: 'Token 绑定失败，请稍后重试',
-                    type: 'error'
-                })
             })
         },
         Cancellation({ commit }) {
