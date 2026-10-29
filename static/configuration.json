@@ -1,5 +1,5 @@
 {
-    "githubUsername": "GitHub-Laziji",
+    "githubUsername": "chengzizai99-prog",
     "blogTitle": "标题",
     "blogDescribe": "简介",
     "htmlTitle": "标签页标题",
@@ -7,7 +7,7 @@
     "useBackgroundImage": false,
     "backgroundColorLeft": "#2690F9",
     "backgroundColorRight": "#FC2D2D",
-    "audioUrl": "http://localhost/audio.mp3",
+    "audioUrl": "",
     "mini": false,
     "webSites":[
         {"name":"站点名" , "url":"http://localhost"}
