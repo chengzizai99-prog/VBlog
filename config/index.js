@@ -50,7 +50,8 @@ module.exports = {
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),
         assetsSubDirectory: 'static',
-        assetsPublicPath: '/',
+        // 部署到子路径时用 PUBLIC_PATH=/VBlog/ npm run build，不传则保持根路径行为
+        assetsPublicPath: process.env.PUBLIC_PATH || '/',
 
         /**
          * Source Maps

@@ -51,7 +51,12 @@ const configuration = {
         // 原来用同步 XHR 拉 configuration.json（第三个参数 false），
         // 会把主线程卡住直到请求返回；改成 fetch + Promise，加载失败退回默认配置。
         Init({ commit }) {
-            return fetch('static/configuration.json', { cache: 'no-cache' })
+            // 用 webpack 运行时 publicPath 拼地址：部署在子路径（如 Pages 的 /VBlog/）时也不会丢配置。
+            // 原先写相对路径 'static/configuration.json'，访问 /VBlog（不带结尾斜杠）会解析到根下 404，
+            // 再被下面的 catch 静默吞掉，界面退回上游默认配置。
+            // eslint-disable-next-line no-undef
+            const publicPath = typeof __webpack_public_path__ === 'string' ? __webpack_public_path__ : '/'
+            return fetch(publicPath + 'static/configuration.json', { cache: 'no-cache' })
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('configuration.json ' + response.status)
