@@ -126,6 +126,20 @@ export default {
         windowSize.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
         return windowSize
     },
+    // 判断该不该用移动端布局。原来只看“竖屏比例”，横屏手机（宽>高）
+    // 会被判成桌面端推回 /，看着就是桌面布局被压成一条窄栏。
+    isMobile() {
+        let ua = navigator.userAgent || ''
+        if (/Android|iPhone|iPod|iPad|Windows Phone|HarmonyOS|Mobile/i.test(ua)) {
+            return true
+        }
+        let size = this.getWindowSize()
+        // 视口短边很小也按移动端处理（部分移动浏览器 UA 里不带 Mobile）
+        if (Math.min(size.width, size.height) <= 500) {
+            return true
+        }
+        return size.height > size.width * 1.2
+    },
     addHttp(url){
         return (url.match(/https?:\/\//i)?'':'https://') + url
     }

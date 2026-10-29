@@ -18,7 +18,13 @@ console.log('[build-pages] PUBLIC_PATH = ' + PUBLIC_PATH);
 const child = spawn(process.execPath, ['build/build.js'], {
   cwd: root,
   stdio: ['ignore', 'pipe', 'pipe'],
-  env: { ...process.env, NODE_ENV: 'production', PUBLIC_PATH },
+  env: {
+    ...process.env,
+    NODE_ENV: 'production',
+    // webpack 3 内部用 md4，Node 17+ 要开 legacy provider 才能构建
+    NODE_OPTIONS: [(process.env.NODE_OPTIONS || ''), '--openssl-legacy-provider'].filter(Boolean).join(' '),
+    PUBLIC_PATH,
+  },
 });
 
 let sawComplete = false;

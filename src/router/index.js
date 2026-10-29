@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import util from '@/utils/util'
+
+// 移动端首页，设备判断统一走 util.isMobile()
+const MOBILE_HOME = '/mobile/user/blog/main'
 
 // 路由级懒加载：每个页面单独打包，首屏只下载当前路由需要的代码。
 // 原来 23 个页面全部静态 import，首屏必须把桌面端和移动端所有页面一次性拉下来。
@@ -179,21 +183,6 @@ export const constantRouterMap = [
         ]
     },
 
-
-
-    {
-        path: "/404",
-        component: Error404
-    },
-    {
-        path: '/',
-        redirect: '/user/new',
-    },
-    {
-        path: "*",
-        redirect: "/404"
-    },
-
     //mobile
     {
         path: '/mobile/user/blog',
@@ -269,6 +258,21 @@ export const constantRouterMap = [
         ]
 
     },
+
+    // 兜底必须放最后：vue-router 按顺序匹配，'*' 放在移动端路由前面会把
+    // /mobile/user/blog 这类地址全部吃掉，手机端永远进不了移动布局。
+    {
+        path: "/404",
+        component: Error404
+    },
+    {
+        path: '/',
+        redirect: '/user/new',
+    },
+    {
+        path: "*",
+        redirect: "/404"
+    },
 ]
 
 
@@ -285,6 +289,18 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
     Vue.prototype.$setTitle(to.meta.title)
+    // 设备与布局不匹配时改道。放在全局守卫里，而不是 App.vue 的 created：
+    // 初始导航还没结束时 $router.push 会被丢掉，手机上早年表现就是停在桌面布局。
+    const mobileDevice = util.isMobile()
+    const mobilePath = to.path.indexOf('/mobile/') === 0
+    if (mobileDevice && !mobilePath && to.path.indexOf('/user') === 0) {
+        next(MOBILE_HOME)
+        return
+    }
+    if (!mobileDevice && mobilePath) {
+        next('/')
+        return
+    }
     next()
 })
 

@@ -26,14 +26,8 @@
             // 否则 githubUsername 还是空串，请求会打到 /users/ 上。
             this.$store.dispatch("Init").then(() => this.$store.dispatch("GetInfo"))
             this.$setTitle(this.$route.meta.title)
-            let windowSize = this.$util.getWindowSize()
-            let pathArr = this.$route.path.split("/")
-            if (pathArr[1] == "user" && windowSize.height > windowSize.width * 1.2) {
-                this.$router.push("/mobile/user/blog")
-            }
-            if (pathArr[1] == "mobile" && windowSize.height <= windowSize.width * 1.2) {
-                this.$router.push("/")
-            }
+            // 移动端/桌面端的改道已移到 src/router/index.js 的全局守卫（util.isMobile()），
+            // 这里再 push 会在初始导航未结束时被丢掉。
         }
     }
 </script>
